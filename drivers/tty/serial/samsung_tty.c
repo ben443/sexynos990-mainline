@@ -42,6 +42,7 @@
 #include <linux/tty.h>
 #include <linux/tty_flip.h>
 #include <linux/types.h>
+#include <linux/pinctrl/consumer.h>
 
 #include <asm/irq.h>
 
@@ -96,6 +97,7 @@ struct s3c24xx_serial_drv_data {
 	const struct s3c24xx_uart_info	info;
 	const struct s3c2410_uartcfg	def_cfg;
 	const unsigned int		fifosize[UART_NR];
+	bool                            has_rts_ctrl;
 };
 
 struct s3c24xx_uart_dma {
@@ -147,12 +149,47 @@ struct s3c24xx_uart_port {
 	struct clk			*baudclk;
 	struct uart_port		port;
 	const struct s3c24xx_serial_drv_data	*drv_data;
+	struct pinctrl *pinctrl;
+	struct pinctrl_state *default_state;
+	struct pinctrl_state *tx_dat_state;
+	struct pinctrl_state *rts_state;
+	bool rts_enabled;
 
 	/* reference to platform data */
 	const struct s3c2410_uartcfg	*cfg;
 
 	struct s3c24xx_uart_dma		*dma;
 };
+
+static void s3c24xx_uart_set_gpio(struct s3c24xx_uart_port *ourport, bool enable)
+{
+	int ret;
+
+	if (!ourport->rts_enabled)
+		return;
+
+	if (enable) {
+		ret = pinctrl_select_state(ourport->pinctrl,
+						ourport->tx_dat_state);
+		if (ret) {
+			dev_err(ourport->port.dev, "TX DAT error: %d\n", ret);
+			return;
+		}
+
+		udelay(10);
+
+		ret = pinctrl_select_state(ourport->pinctrl,
+						ourport->rts_state);
+		if (ret)
+			dev_err(ourport->port.dev, "RTS error: %d\n", ret);
+
+	} else {
+		ret = pinctrl_select_state(ourport->pinctrl,
+						ourport->default_state);
+		if (ret)
+			dev_err(ourport->port.dev, "Default state error: %d\n", ret);
+    }
+}
 
 static void s3c24xx_serial_tx_chars(struct s3c24xx_uart_port *ourport);
 
@@ -1996,6 +2033,21 @@ static int s3c24xx_serial_probe(struct platform_device *pdev)
 		fifosize_prop = of_property_read_u32(np, "samsung,uart-fifosize",
 				&ourport->port.fifosize);
 
+		if (ourport->drv_data->has_rts_ctrl &&
+			of_property_read_bool(np, "rts-gpio-control")) {
+
+			ourport->pinctrl = devm_pinctrl_get(&pdev->dev);
+			if (!IS_ERR(ourport->pinctrl)) {
+				ourport->tx_dat_state = pinctrl_lookup_state(ourport->pinctrl,
+											"tx_dat");
+				ourport->rts_state = pinctrl_lookup_state(ourport->pinctrl,
+											"rts");
+
+				ourport->rts_enabled = !IS_ERR(ourport->tx_dat_state) &&
+							!IS_ERR(ourport->rts_state);
+			}
+		}
+
 		if (of_property_read_u32(np, "reg-io-width", &prop) == 0) {
 			switch (prop) {
 			case 1:
@@ -2075,9 +2127,18 @@ static void s3c24xx_serial_remove(struct platform_device *dev)
 static int s3c24xx_serial_suspend(struct device *dev)
 {
 	struct uart_port *port = s3c24xx_dev_to_port(dev);
+	struct s3c24xx_uart_port *ourport = to_ourport(port);
 
-	if (port)
+	if (port) {
+
+		if (ourport->drv_data->has_rts_ctrl &&
+			ourport->rts_enabled)
+		{
+			s3c24xx_uart_set_gpio(ourport, false);
+		}
+
 		uart_suspend_port(&s3c24xx_uart_drv, port);
+	}
 
 	return 0;
 }
@@ -2095,6 +2156,12 @@ static int s3c24xx_serial_resume(struct device *dev)
 		if (!IS_ERR(ourport->baudclk))
 			clk_disable_unprepare(ourport->baudclk);
 		clk_disable_unprepare(ourport->clk);
+
+		if (ourport->drv_data->has_rts_ctrl &&
+			ourport->rts_enabled)
+		{
+			s3c24xx_uart_set_gpio(ourport, false);
+		}
 
 		uart_resume_port(&s3c24xx_uart_drv, port);
 	}
@@ -2498,6 +2565,13 @@ static const struct s3c24xx_serial_drv_data exynos850_serial_drv_data = {
 	.fifosize = { 256, 64, 64, 64 },
 };
 
+static const struct s3c24xx_serial_drv_data exynos990_serial_drv_data = {
+        EXYNOS_COMMON_SERIAL_DRV_DATA,
+        /* samsung,uart-fifosize must be specified in the device tree. */
+	.fifosize = { 0 },
+	.has_rts_ctrl = true,
+};
+
 static const struct s3c24xx_serial_drv_data exynos8895_serial_drv_data = {
 	EXYNOS_COMMON_SERIAL_DRV_DATA,
 	/* samsung,uart-fifosize must be specified in the device tree. */
@@ -2534,6 +2608,7 @@ static const struct s3c24xx_serial_drv_data gs101_serial_drv_data = {
 #define EXYNOS4210_SERIAL_DRV_DATA (&exynos4210_serial_drv_data)
 #define EXYNOS5433_SERIAL_DRV_DATA (&exynos5433_serial_drv_data)
 #define EXYNOS850_SERIAL_DRV_DATA (&exynos850_serial_drv_data)
+#define EXYNOS990_SERIAL_DRV_DATA (&exynos990_serial_drv_data)
 #define EXYNOS8895_SERIAL_DRV_DATA (&exynos8895_serial_drv_data)
 #define GS101_SERIAL_DRV_DATA (&gs101_serial_drv_data)
 
@@ -2541,6 +2616,7 @@ static const struct s3c24xx_serial_drv_data gs101_serial_drv_data = {
 #define EXYNOS4210_SERIAL_DRV_DATA NULL
 #define EXYNOS5433_SERIAL_DRV_DATA NULL
 #define EXYNOS850_SERIAL_DRV_DATA NULL
+#define EXYNOS990_SERIAL_DRV_DATA NULL
 #define EXYNOS8895_SERIAL_DRV_DATA NULL
 #define GS101_SERIAL_DRV_DATA NULL
 #endif
@@ -2653,6 +2729,8 @@ static const struct of_device_id s3c24xx_uart_dt_match[] = {
 		.data = S5L_SERIAL_DRV_DATA },
 	{ .compatible = "samsung,exynos850-uart",
 		.data = EXYNOS850_SERIAL_DRV_DATA },
+	{ .compatible = "samsung,exynos990-uart",
+		.data = EXYNOS990_SERIAL_DRV_DATA },
 	{ .compatible = "axis,artpec8-uart",
 		.data = ARTPEC8_SERIAL_DRV_DATA },
 	{ .compatible = "google,gs101-uart",
@@ -2863,3 +2941,4 @@ MODULE_ALIAS("platform:samsung-uart");
 MODULE_DESCRIPTION("Samsung SoC Serial port driver");
 MODULE_AUTHOR("Ben Dooks <ben@simtec.co.uk>");
 MODULE_LICENSE("GPL v2");
+
