@@ -18,7 +18,7 @@
 
 /* NOTE: Must be equal to the last clock ID increased by one */
 #define CLKS_NR_TOP (CLK_GOUT_CMU_VRA_BUS + 1)
-#define CLKS_NR_HSI0 (CLK_GOUT_HSI0_XIU_D_HSI0_ACLK + 1)
+#define CLKS_NR_HSI0 (CLK_GOUT_HSI0_XIU_D_ACLK + 1)
 #define CLKS_NR_PERIS (CLK_GOUT_PERIS_OTP_CON_TOP_OSCCLK + 1)
 
 /* ---- CMU_TOP ------------------------------------------------------------- */
@@ -1180,63 +1180,76 @@ CLK_OF_DECLARE(exynos990_cmu_top, "samsung,exynos990-cmu-top",
 
 /* Register Offset definitions for CMU_HSI0 (0x10a00000) */
 #define PLL_CON0_MUX_CLKCMU_HSI0_BUS_USER						0x0600
-#define PLL_CON0_MUX_CLKCMU_HSI0_USB31DRD_USER						0x0620
-#define PLL_CON0_MUX_CLKCMU_HSI0_USBDP_DEBUG_USER					0x0630
+#define PLL_CON1_MUX_CLKCMU_HSI0_BUS_USER						0x0604
 #define PLL_CON0_MUX_CLKCMU_HSI0_DPGTC_USER						0x0610
+#define PLL_CON1_MUX_CLKCMU_HSI0_DPGTC_USER						0x0614
+#define PLL_CON0_MUX_CLKCMU_HSI0_USB31DRD_USER						0x0620
+#define PLL_CON1_MUX_CLKCMU_HSI0_USB31DRD_USER						0x0624
+#define PLL_CON0_MUX_CLKCMU_HSI0_USBDP_DEBUG_USER					0x0630
+#define PLL_CON1_MUX_CLKCMU_HSI0_USBDP_DEBUG_USER					0x0634
+#define CLK_CON_GAT_CLK_BLK_HSI0_UID_HSI0_CMU_HSI0_IPCLKPORT_PCLK			0x2000
 #define CLK_CON_GAT_GOUT_BLK_HSI0_UID_DP_LINK_IPCLKPORT_I_DP_GTC_CLK			0x2004
-#define CLK_CON_GAT_GOUT_BLK_HSI0_UID_PPMU_HSI0_BUS1_IPCLKPORT_ACLK			0x2018
-#define CLK_CON_GAT_GOUT_BLK_HSI0_UID_LHS_ACEL_D_HSI0_IPCLKPORT_I_CLK			0x2014
-#define CLK_CON_GAT_GOUT_BLK_HSI0_UID_RSTNSYNC_CLK_HSI0_BUS_IPCLKPORT_CLK		0x2020
-#define CLK_CON_GAT_GOUT_BLK_HSI0_UID_VGEN_LITE_HSI0_IPCLKPORT_CLK			0x2044
 #define CLK_CON_GAT_GOUT_BLK_HSI0_UID_DP_LINK_IPCLKPORT_I_PCLK				0x2008
 #define CLK_CON_GAT_GOUT_BLK_HSI0_UID_D_TZPC_HSI0_IPCLKPORT_PCLK			0x200c
 #define CLK_CON_GAT_GOUT_BLK_HSI0_UID_LHM_AXI_P_HSI0_IPCLKPORT_I_CLK			0x2010
+#define CLK_CON_GAT_GOUT_BLK_HSI0_UID_LHS_ACEL_D_HSI0_IPCLKPORT_I_CLK			0x2014
+#define CLK_CON_GAT_GOUT_BLK_HSI0_UID_PPMU_HSI0_BUS1_IPCLKPORT_ACLK			0x2018
 #define CLK_CON_GAT_GOUT_BLK_HSI0_UID_PPMU_HSI0_BUS1_IPCLKPORT_PCLK			0x201c
+#define CLK_CON_GAT_GOUT_BLK_HSI0_UID_RSTNSYNC_CLK_HSI0_BUS_IPCLKPORT_CLK		0x2020
 #define CLK_CON_GAT_GOUT_BLK_HSI0_UID_SYSMMU_USB_IPCLKPORT_CLK_S2			0x2024
 #define CLK_CON_GAT_GOUT_BLK_HSI0_UID_SYSREG_HSI0_IPCLKPORT_PCLK			0x2028
 #define CLK_CON_GAT_GOUT_BLK_HSI0_UID_USB31DRD_IPCLKPORT_ACLK_PHYCTRL			0x202c
+#define CLK_CON_GAT_GOUT_BLK_HSI0_UID_USB31DRD_IPCLKPORT_BUS_CLK_EARLY			0x2030
 #define CLK_CON_GAT_GOUT_BLK_HSI0_UID_USB31DRD_IPCLKPORT_I_USB31DRD_REF_CLK_40		0x2034
+#define CLK_CON_GAT_GOUT_BLK_HSI0_UID_USB31DRD_IPCLKPORT_I_USBDPPHY_REF_SOC_PLL		0x2038
 #define CLK_CON_GAT_GOUT_BLK_HSI0_UID_USB31DRD_IPCLKPORT_I_USBDPPHY_SCL_APB_PCLK	0x203c
 #define CLK_CON_GAT_GOUT_BLK_HSI0_UID_USB31DRD_IPCLKPORT_I_USBPCS_APB_CLK		0x2040
-#define CLK_CON_GAT_GOUT_BLK_HSI0_UID_USB31DRD_IPCLKPORT_BUS_CLK_EARLY			0x2030
-#define CLK_CON_GAT_GOUT_BLK_HSI0_UID_HSI0_CMU_HSI0_IPCLKPORT_PCLK			0x2000
+#define CLK_CON_GAT_GOUT_BLK_HSI0_UID_VGEN_LITE_HSI0_IPCLKPORT_CLK			0x2044
 #define CLK_CON_GAT_GOUT_BLK_HSI0_UID_XIU_D_HSI0_IPCLKPORT_ACLK				0x2048
-#define CLK_CON_GAT_GOUT_BLK_HSI0_UID_USB31DRD_IPCLKPORT_I_USBDPPHY_REF_SOC_PLL		0x2038
 
 static const unsigned long hsi0_clk_regs[] __initconst = {
 	PLL_CON0_MUX_CLKCMU_HSI0_BUS_USER,
-	PLL_CON0_MUX_CLKCMU_HSI0_USB31DRD_USER,
-	PLL_CON0_MUX_CLKCMU_HSI0_USBDP_DEBUG_USER,
+	PLL_CON1_MUX_CLKCMU_HSI0_BUS_USER,
 	PLL_CON0_MUX_CLKCMU_HSI0_DPGTC_USER,
+	PLL_CON1_MUX_CLKCMU_HSI0_DPGTC_USER,
+	PLL_CON0_MUX_CLKCMU_HSI0_USB31DRD_USER,
+	PLL_CON1_MUX_CLKCMU_HSI0_USB31DRD_USER,
+	PLL_CON0_MUX_CLKCMU_HSI0_USBDP_DEBUG_USER,
+	PLL_CON1_MUX_CLKCMU_HSI0_USBDP_DEBUG_USER,
+	CLK_CON_GAT_CLK_BLK_HSI0_UID_HSI0_CMU_HSI0_IPCLKPORT_PCLK,
 	CLK_CON_GAT_GOUT_BLK_HSI0_UID_DP_LINK_IPCLKPORT_I_DP_GTC_CLK,
 	CLK_CON_GAT_GOUT_BLK_HSI0_UID_DP_LINK_IPCLKPORT_I_PCLK,
-	CLK_CON_GAT_GOUT_BLK_HSI0_UID_PPMU_HSI0_BUS1_IPCLKPORT_ACLK,
-	CLK_CON_GAT_GOUT_BLK_HSI0_UID_LHS_ACEL_D_HSI0_IPCLKPORT_I_CLK,
-	CLK_CON_GAT_GOUT_BLK_HSI0_UID_RSTNSYNC_CLK_HSI0_BUS_IPCLKPORT_CLK,
-	CLK_CON_GAT_GOUT_BLK_HSI0_UID_VGEN_LITE_HSI0_IPCLKPORT_CLK,
 	CLK_CON_GAT_GOUT_BLK_HSI0_UID_D_TZPC_HSI0_IPCLKPORT_PCLK,
 	CLK_CON_GAT_GOUT_BLK_HSI0_UID_LHM_AXI_P_HSI0_IPCLKPORT_I_CLK,
+	CLK_CON_GAT_GOUT_BLK_HSI0_UID_LHS_ACEL_D_HSI0_IPCLKPORT_I_CLK,
+	CLK_CON_GAT_GOUT_BLK_HSI0_UID_PPMU_HSI0_BUS1_IPCLKPORT_ACLK,
 	CLK_CON_GAT_GOUT_BLK_HSI0_UID_PPMU_HSI0_BUS1_IPCLKPORT_PCLK,
+	CLK_CON_GAT_GOUT_BLK_HSI0_UID_RSTNSYNC_CLK_HSI0_BUS_IPCLKPORT_CLK,
 	CLK_CON_GAT_GOUT_BLK_HSI0_UID_SYSMMU_USB_IPCLKPORT_CLK_S2,
 	CLK_CON_GAT_GOUT_BLK_HSI0_UID_SYSREG_HSI0_IPCLKPORT_PCLK,
 	CLK_CON_GAT_GOUT_BLK_HSI0_UID_USB31DRD_IPCLKPORT_ACLK_PHYCTRL,
+	CLK_CON_GAT_GOUT_BLK_HSI0_UID_USB31DRD_IPCLKPORT_BUS_CLK_EARLY,
+	CLK_CON_GAT_GOUT_BLK_HSI0_UID_USB31DRD_IPCLKPORT_I_USB31DRD_REF_CLK_40,
+	CLK_CON_GAT_GOUT_BLK_HSI0_UID_USB31DRD_IPCLKPORT_I_USBDPPHY_REF_SOC_PLL,
 	CLK_CON_GAT_GOUT_BLK_HSI0_UID_USB31DRD_IPCLKPORT_I_USBDPPHY_SCL_APB_PCLK,
 	CLK_CON_GAT_GOUT_BLK_HSI0_UID_USB31DRD_IPCLKPORT_I_USBPCS_APB_CLK,
-	CLK_CON_GAT_GOUT_BLK_HSI0_UID_USB31DRD_IPCLKPORT_BUS_CLK_EARLY,
-	CLK_CON_GAT_GOUT_BLK_HSI0_UID_HSI0_CMU_HSI0_IPCLKPORT_PCLK,
+	CLK_CON_GAT_GOUT_BLK_HSI0_UID_VGEN_LITE_HSI0_IPCLKPORT_CLK,
 	CLK_CON_GAT_GOUT_BLK_HSI0_UID_XIU_D_HSI0_IPCLKPORT_ACLK,
 };
 
 /* Parent clock list for CMU_HSI0 muxes */
 PNAME(mout_hsi0_bus_user_p)		= { "oscclk", "dout_cmu_hsi0_bus" };
+PNAME(mout_hsi0_dpgtc_user_p)           = { "oscclk", "dout_cmu_hsi0_dpgtc" };
 PNAME(mout_hsi0_usb31drd_user_p)	= { "oscclk", "dout_cmu_hsi0_usb31drd" };
 PNAME(mout_hsi0_usbdp_debug_user_p)	= { "oscclk",
 					    "dout_cmu_hsi0_usbdp_debug" };
-PNAME(mout_hsi0_dpgtc_user_p)		= { "oscclk", "dout_cmu_hsi0_dpgtc" };
 
 static const struct samsung_mux_clock hsi0_mux_clks[] __initconst = {
 	MUX(CLK_MOUT_HSI0_BUS_USER, "mout_hsi0_bus_user",
 	    mout_hsi0_bus_user_p, PLL_CON0_MUX_CLKCMU_HSI0_BUS_USER,
+	    4, 1),
+	MUX(CLK_MOUT_HSI0_DPGTC_USER, "mout_hsi0_dpgtc_user",
+	    mout_hsi0_dpgtc_user_p, PLL_CON0_MUX_CLKCMU_HSI0_DPGTC_USER,
 	    4, 1),
 	MUX(CLK_MOUT_HSI0_USB31DRD_USER, "mout_hsi0_usb31drd_user",
 	    mout_hsi0_usb31drd_user_p, PLL_CON0_MUX_CLKCMU_HSI0_USB31DRD_USER,
@@ -1245,12 +1258,13 @@ static const struct samsung_mux_clock hsi0_mux_clks[] __initconst = {
 	    mout_hsi0_usbdp_debug_user_p,
 	    PLL_CON0_MUX_CLKCMU_HSI0_USBDP_DEBUG_USER,
 	    4, 1),
-	MUX(CLK_MOUT_HSI0_DPGTC_USER, "mout_hsi0_dpgtc_user",
-	    mout_hsi0_dpgtc_user_p, PLL_CON0_MUX_CLKCMU_HSI0_DPGTC_USER,
-	    4, 1),
 };
 
 static const struct samsung_gate_clock hsi0_gate_clks[] __initconst = {
+	GATE(CLK_GOUT_HSI0_CMU_PCLK,
+	     "gout_hsi0_cmu_pclk", "mout_hsi0_bus_user",
+	     CLK_CON_GAT_CLK_BLK_HSI0_UID_HSI0_CMU_HSI0_IPCLKPORT_PCLK,
+	     21, CLK_IS_CRITICAL, 0),
 	GATE(CLK_GOUT_HSI0_DP_LINK_DP_GTC_CLK,
 	     "gout_hsi0_dp_link_dp_gtc_clk", "mout_hsi0_dpgtc_user",
 	     CLK_CON_GAT_GOUT_BLK_HSI0_UID_DP_LINK_IPCLKPORT_I_DP_GTC_CLK,
@@ -1259,32 +1273,36 @@ static const struct samsung_gate_clock hsi0_gate_clks[] __initconst = {
 	     "gout_hsi0_dp_link_pclk", "mout_hsi0_bus_user",
 	     CLK_CON_GAT_GOUT_BLK_HSI0_UID_DP_LINK_IPCLKPORT_I_PCLK,
 	     21, 0, 0),
-	GATE(CLK_GOUT_HSI0_D_TZPC_HSI0_PCLK,
-	     "gout_hsi0_d_tzpc_hsi0_pclk", "mout_hsi0_bus_user",
+	GATE(CLK_GOUT_HSI0_D_TZPC_PCLK,
+	     "gout_hsi0_d_tzpc_pclk", "mout_hsi0_bus_user",
 	     CLK_CON_GAT_GOUT_BLK_HSI0_UID_D_TZPC_HSI0_IPCLKPORT_PCLK,
 	     21, 0, 0),
-	GATE(CLK_GOUT_HSI0_LHM_AXI_P_HSI0_CLK,
-	     "gout_hsi0_lhm_axi_p_hsi0_clk", "mout_hsi0_bus_user",
+	GATE(CLK_GOUT_HSI0_LHM_AXI_P_CLK,
+	     "gout_hsi0_lhm_axi_p_clk", "mout_hsi0_bus_user",
 	     CLK_CON_GAT_GOUT_BLK_HSI0_UID_LHM_AXI_P_HSI0_IPCLKPORT_I_CLK,
 	     21, CLK_IS_CRITICAL, 0),
-	GATE(CLK_GOUT_HSI0_PPMU_HSI0_BUS1_ACLK,
-	     "gout_hsi0_ppmu_hsi0_bus1_aclk", "mout_hsi0_bus_user",
+	GATE(CLK_GOUT_HSI0_LHS_ACEL_D_CLK,
+	     "gout_hsi0_lhs_acel_d_clk", "mout_hsi0_bus_user",
+	     CLK_CON_GAT_GOUT_BLK_HSI0_UID_LHS_ACEL_D_HSI0_IPCLKPORT_I_CLK,
+	     21, 0, 0),
+	GATE(CLK_GOUT_HSI0_PPMU_BUS1_ACLK,
+	     "gout_hsi0_ppmu_bus1_aclk", "mout_hsi0_bus_user",
 	     CLK_CON_GAT_GOUT_BLK_HSI0_UID_PPMU_HSI0_BUS1_IPCLKPORT_ACLK,
 	     21, 0, 0),
-	GATE(CLK_GOUT_HSI0_PPMU_HSI0_BUS1_PCLK,
-	     "gout_hsi0_ppmu_hsi0_bus1_pclk", "mout_hsi0_bus_user",
+	GATE(CLK_GOUT_HSI0_PPMU_BUS1_PCLK,
+	     "gout_hsi0_ppmu_bus1_pclk", "mout_hsi0_bus_user",
 	     CLK_CON_GAT_GOUT_BLK_HSI0_UID_PPMU_HSI0_BUS1_IPCLKPORT_PCLK,
 	     21, 0, 0),
-	GATE(CLK_GOUT_HSI0_CLK_HSI0_BUS_CLK,
-	     "gout_hsi0_clk_hsi0_bus_clk", "mout_hsi0_bus_user",
+	GATE(CLK_GOUT_HSI0_BUS_CLK,
+	     "gout_hsi0_bus_clk", "mout_hsi0_bus_user",
 	     CLK_CON_GAT_GOUT_BLK_HSI0_UID_RSTNSYNC_CLK_HSI0_BUS_IPCLKPORT_CLK,
 	     21, 0, 0),
 	GATE(CLK_GOUT_HSI0_SYSMMU_USB_CLK_S2,
 	     "gout_hsi0_sysmmu_usb_clk_s2", "mout_hsi0_bus_user",
 	     CLK_CON_GAT_GOUT_BLK_HSI0_UID_SYSMMU_USB_IPCLKPORT_CLK_S2,
 	     21, CLK_IGNORE_UNUSED, 0),
-	GATE(CLK_GOUT_HSI0_SYSREG_HSI0_PCLK,
-	     "gout_hsi0_sysreg_hsi0_pclk", "mout_hsi0_bus_user",
+	GATE(CLK_GOUT_HSI0_SYSREG_PCLK,
+	     "gout_hsi0_sysreg_pclk", "mout_hsi0_bus_user",
 	     CLK_CON_GAT_GOUT_BLK_HSI0_UID_SYSREG_HSI0_IPCLKPORT_PCLK,
 	     21, 0, 0),
 	GATE(CLK_GOUT_HSI0_USB31DRD_ACLK_PHYCTRL,
@@ -1296,18 +1314,16 @@ static const struct samsung_gate_clock hsi0_gate_clks[] __initconst = {
 	     "mout_hsi0_bus_user",
 	     CLK_CON_GAT_GOUT_BLK_HSI0_UID_USB31DRD_IPCLKPORT_BUS_CLK_EARLY,
 	     21, 0, 0),
-	GATE(CLK_GOUT_HSI0_USB31DRD_USB31DRD_REF_CLK_40,
-	     "gout_hsi0_usb31drd_usb31drd_ref_clk_40",
-	     "mout_hsi0_usb31drd_user",
+	GATE(CLK_GOUT_HSI0_USB31DRD_CLK_40,
+	     "gout_hsi0_usb31drd_clk_40", "mout_hsi0_usb31drd_user",
 	     CLK_CON_GAT_GOUT_BLK_HSI0_UID_USB31DRD_IPCLKPORT_I_USB31DRD_REF_CLK_40,
 	     21, 0, 0),
-	GATE(CLK_GOUT_HSI0_USB31DRD_USBDPPHY_REF_SOC_PLL,
-	     "gout_hsi0_usb31drd_usbdpphy_ref_soc_pll",
-	     "mout_hsi0_usbdp_debug_user",
+	GATE(CLK_GOUT_HSI0_USB31DRD_SOC_PLL,
+	     "gout_hsi0_usb31drd_soc_pll", "mout_hsi0_usbdp_debug_user",
 	     CLK_CON_GAT_GOUT_BLK_HSI0_UID_USB31DRD_IPCLKPORT_I_USBDPPHY_REF_SOC_PLL,
 	     21, 0, 0),
-	GATE(CLK_GOUT_HSI0_USB31DRD_USBDPPHY_SCL_APB,
-	     "gout_hsi0_usb31drd_ipclkport_i_usbdpphy_scl_apb_pclk",
+	GATE(CLK_GOUT_HSI0_USB31DRD_USBDPPHY_SCL_APB_PCLK,
+	     "gout_hsi0_usb31drd_usbdpphy_scl_apb_pclk",
 	     "mout_hsi0_bus_user",
 	     CLK_CON_GAT_GOUT_BLK_HSI0_UID_USB31DRD_IPCLKPORT_I_USBDPPHY_SCL_APB_PCLK,
 	     21, 0, 0),
@@ -1316,29 +1332,25 @@ static const struct samsung_gate_clock hsi0_gate_clks[] __initconst = {
 	     "mout_hsi0_bus_user",
 	     CLK_CON_GAT_GOUT_BLK_HSI0_UID_USB31DRD_IPCLKPORT_I_USBPCS_APB_CLK,
 	     21, 0, 0),
-	GATE(CLK_GOUT_HSI0_VGEN_LITE_HSI0_CLK,
-	     "gout_hsi0_vgen_lite_ipclkport_clk", "mout_hsi0_bus_user",
+	GATE(CLK_GOUT_HSI0_VGEN_LITE_CLK,
+	     "gout_hsi0_vgen_lite_clk", "mout_hsi0_bus_user",
 	     CLK_CON_GAT_GOUT_BLK_HSI0_UID_VGEN_LITE_HSI0_IPCLKPORT_CLK,
 	     21, 0, 0),
-	GATE(CLK_GOUT_HSI0_CMU_HSI0_PCLK,
-	     "gout_hsi0_cmu_hsi0_pclk", "mout_hsi0_bus_user",
-	     CLK_CON_GAT_GOUT_BLK_HSI0_UID_HSI0_CMU_HSI0_IPCLKPORT_PCLK,
-	     21, CLK_IGNORE_UNUSED, 0),
-	GATE(CLK_GOUT_HSI0_XIU_D_HSI0_ACLK,
-	     "gout_hsi0_xiu_d_hsi0_aclk", "mout_hsi0_bus_user",
+	GATE(CLK_GOUT_HSI0_XIU_D_ACLK,
+	     "gout_hsi0_xiu_d_aclk", "mout_hsi0_bus_user",
 	     CLK_CON_GAT_GOUT_BLK_HSI0_UID_XIU_D_HSI0_IPCLKPORT_ACLK,
 	     21, CLK_IGNORE_UNUSED, 0),
 };
 
 static const struct samsung_cmu_info hsi0_cmu_info __initconst = {
-	.mux_clks = hsi0_mux_clks,
-	.nr_mux_clks = ARRAY_SIZE(hsi0_mux_clks),
-	.gate_clks = hsi0_gate_clks,
-	.nr_gate_clks = ARRAY_SIZE(hsi0_gate_clks),
-	.nr_clk_ids = CLKS_NR_HSI0,
-	.clk_regs = hsi0_clk_regs,
-	.nr_clk_regs = ARRAY_SIZE(hsi0_clk_regs),
-	.clk_name		= "bus",
+	.mux_clks	= hsi0_mux_clks,
+	.nr_mux_clks	= ARRAY_SIZE(hsi0_mux_clks),
+	.gate_clks	= hsi0_gate_clks,
+	.nr_gate_clks	= ARRAY_SIZE(hsi0_gate_clks),
+	.nr_clk_ids	= CLKS_NR_HSI0,
+	.clk_regs	= hsi0_clk_regs,
+	.nr_clk_regs	= ARRAY_SIZE(hsi0_clk_regs),
+	.clk_name	= "bus",
 };
 
 /* ---- CMU_PERIS ----------------------------------------------------------- */
