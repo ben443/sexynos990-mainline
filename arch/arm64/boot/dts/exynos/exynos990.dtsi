@@ -271,11 +271,8 @@
 				 <&cmu_top CLK_DOUT_CMU_HSI0_USB31DRD>,
 				 <&cmu_top CLK_DOUT_CMU_HSI0_USBDP_DEBUG>,
 				 <&cmu_top CLK_DOUT_CMU_HSI0_DPGTC>;
-			clock-names = "oscclk",
-				      "bus",
-				      "usb31drd",
-				      "usbdp_debug",
-				      "dpgtc";
+			clock-names = "oscclk", "bus", "usb31drd",
+				      "usbdp_debug", "dpgtc";
 		};
 
 		usbdrd: usb@10e00000 {
@@ -283,7 +280,7 @@
 				     "samsung,exynos850-dwusb3";
 			ranges = <0x0 0x10e00000 0x10000>;
 			clocks = <&cmu_hsi0 CLK_GOUT_HSI0_USB31DRD_BUS_CLK_EARLY>,
-				 <&cmu_hsi0 CLK_GOUT_HSI0_USB31DRD_USB31DRD_REF_CLK_40>;
+				 <&cmu_hsi0 CLK_GOUT_HSI0_USB31DRD_CLK_40>;
 			clock-names = "bus_early", "ref";
 			#address-cells = <1>;
 			#size-cells = <1>;
