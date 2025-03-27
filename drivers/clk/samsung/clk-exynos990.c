@@ -473,8 +473,8 @@ PNAME(mout_pll_shared1_p)		= { "oscclk", "fout_shared1_pll" };
 PNAME(mout_pll_shared2_p)		= { "oscclk", "fout_shared2_pll" };
 PNAME(mout_pll_shared3_p)		= { "oscclk", "fout_shared3_pll" };
 PNAME(mout_pll_shared4_p)		= { "oscclk", "fout_shared4_pll" };
-PNAME(mout_cmu_dpu_bus_p)		= { "dout_cmu_clkcmu_dpu",
-					    "dout_cmu_clkcmu_dpu_alt" };
+PNAME(mout_cmu_dpu_bus_p)		= { "dout_cmu_dpu",
+					    "dout_cmu_dpu_alt" };
 PNAME(mout_cmu_apm_bus_p)		= { "dout_cmu_shared0_div2",
 					    "dout_cmu_shared2_div2" };
 PNAME(mout_cmu_aud_cpu_p)		= { "dout_cmu_shared0_div2",
@@ -973,11 +973,11 @@ static const struct samsung_div_clock top_div_clks[] __initconst = {
 	    CLK_CON_DIV_CLKCMU_TNR_BUS, 0, 4),
 	DIV(CLK_DOUT_CMU_VRA_BUS, "dout_cmu_vra_bus", "gout_cmu_vra_bus",
 	    CLK_CON_DIV_CLKCMU_VRA_BUS, 0, 4),
-	DIV(CLK_DOUT_CMU_DPU, "dout_cmu_clkcmu_dpu", "gout_cmu_dpu",
+	DIV(CLK_DOUT_CMU_DPU, "dout_cmu_dpu", "gout_cmu_dpu",
 	    CLK_CON_DIV_DIV_CLKCMU_DPU, 0, 3),
-	DIV(CLK_DOUT_CMU_DPU_ALT, "dout_cmu_clkcmu_dpu_alt", "gout_cmu_dpu_bus",
+	DIV(CLK_DOUT_CMU_DPU_ALT, "dout_cmu_dpu_alt", "gout_cmu_dpu_bus",
 	    CLK_CON_DIV_DIV_CLKCMU_DPU_ALT, 0, 4),
-	DIV(CLK_DOUT_CMU_CMUREF, "dout_cmu_clk_cmuref", "mout_cmu_clk_cmuref",
+	DIV(CLK_DOUT_CMU_CLK_CMUREF, "dout_cmu_clk_cmuref", "mout_cmu_clk_cmuref",
 	    CLK_CON_DIV_DIV_CLK_CMU_CMUREF, 0, 2),
 	/* SHARED0 region*/
 	DIV(CLK_DOUT_CMU_SHARED0_DIV2, "dout_cmu_shared0_div2", "mout_pll_shared0",
@@ -1005,7 +1005,7 @@ static const struct samsung_div_clock top_div_clks[] __initconst = {
             CLK_CON_DIV_PLL_SHARED4_DIV4, 0, 1),
 };
 
-static const struct samsung_fixed_factor_clock cmu_top_ffactor[] __initconst = {
+static const struct samsung_fixed_factor_clock top_fixed_factor_clks[] __initconst = {
 	FFACTOR(CLK_DOUT_CMU_HSI1_PCIE, "dout_cmu_hsi1_pcie",
 		"gout_cmu_hsi1_pcie", 1, 8, 0),
 	FFACTOR(CLK_DOUT_CMU_OTP, "dout_cmu_otp", "oscclk", 1, 8, 0),
@@ -1158,8 +1158,8 @@ static const struct samsung_cmu_info top_cmu_info __initconst = {
 	.nr_mux_clks = ARRAY_SIZE(top_mux_clks),
 	.div_clks = top_div_clks,
 	.nr_div_clks = ARRAY_SIZE(top_div_clks),
-	.fixed_factor_clks = cmu_top_ffactor,
-	.nr_fixed_factor_clks = ARRAY_SIZE(cmu_top_ffactor),
+	.fixed_factor_clks = top_fixed_factor_clks,
+	.nr_fixed_factor_clks = ARRAY_SIZE(top_fixed_factor_clks),
 	.gate_clks = top_gate_clks,
 	.nr_gate_clks = ARRAY_SIZE(top_gate_clks),
 	.nr_clk_ids = CLKS_NR_TOP,
