@@ -20,8 +20,8 @@ jobs:
       run: |
         export ARCH=arm64
         export CROSS_COMPILE=aarch64-linux-gnu-
-        make
-        make ARCH=arm64 modules -j$(nproc)
+        make exynos990_defconfig
+        make ARCH=arm64 -j$(nproc)
         make modules_install
 
     - name: Create Artifact Directory
